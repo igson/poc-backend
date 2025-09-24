@@ -1,0 +1,37 @@
+name: Fluxo de Releases e Produção
+
+on:
+  push:
+    branches:
+      - 'release/*'
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    if: startsWith(github.ref, 'refs/heads/release/')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Exibir informações da release
+        run: |
+          echo "====================================="
+          echo "🔹 Branch de Release detectada: ${GITHUB_REF#refs/heads/}"
+          echo "🔹 Commit feito por: $GITHUB_ACTOR"
+          echo "🔹 Hash do commit: $GITHUB_SHA"
+          echo "🔹 Mensagem do commit: ${{ github.event.head_commit.message }}"
+          echo "🔹 Homologação (QA) iniciada!"
+          echo "====================================="
+
+  production:
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Exibir informações de produção
+        run: |
+          echo "====================================="
+          echo "🚀 Tag de Produção detectada: ${GITHUB_REF#refs/tags/}"
+          echo "🚀 Commit feito por: $GITHUB_ACTOR"
+          echo "🚀 Hash do commit: $GITHUB_SHA"
+          echo "🚀 Mensagem do commit: ${{ github.event.head_commit.message }}"
+          echo "🚀 Deploy para Produção iniciado!"
+          echo "====================================="
