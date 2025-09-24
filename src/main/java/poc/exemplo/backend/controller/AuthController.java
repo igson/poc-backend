@@ -65,4 +65,12 @@ public class AuthController {
         return ResponseEntity.ok("Logged out");
     }
 
+
+     @PostMapping("/cadastro")
+    public ResponseEntity<String> cadastro(HttpServletRequest request) {
+        String sessionId = request.getHeader("X-Session-Id");
+        memcachedClient.delete(sessionId);
+        return ResponseEntity.ok("Cadastro de Usuário");
+    }
+
 }
